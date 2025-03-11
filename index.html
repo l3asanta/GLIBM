@@ -3,201 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Logistics Study Hub</title>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif; /* Use a more modern, student-friendly font */
-            margin: 0;
-            padding: 0;
-            background-color: #f5f8fa; /* Light background for a clean, open feel */
-            color: #333;
-        }
-        nav {
-            background: #3b5998; /* A student-like, friendly blue color */
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 20px;
-            font-size: 1.4em;
-            font-weight: 500;
-        }
-        nav a:hover {
-            color: #ff6600; /* Hover color for added interaction */
-        }
-        .hero {
-            background: url('images/logistics-bg.jpg') no-repeat center center/cover;
-            height: 60vh;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Add some shadow for emphasis */
-        }
-        .hero h1 {
-            font-size: 4em;
-            margin-bottom: 15px;
-            font-weight: 700;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-        }
-        .hero p {
-            font-size: 1.6em;
-            margin-bottom: 30px;
-            max-width: 800px;
-            line-height: 1.4;
-        }
-        .cta {
-            background: #ff6600;
-            color: white;
-            padding: 15px 40px;
-            text-decoration: none;
-            border-radius: 30px;
-            font-size: 1.3em;
-            font-weight: 600;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            transition: 0.3s;
-        }
-        .cta:hover {
-            background: #cc5200;
-            transform: translateY(-5px); /* Lift the button on hover */
-        }
-        .container {
-            width: 90%;
-            margin: auto;
-            text-align: center;
-            padding: 60px 0;
-        }
-        .benefits {
-            display: flex;
-            justify-content: space-evenly;
-            flex-wrap: wrap;
-            gap: 30px;
-        }
-        .benefit {
-            width: 30%;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            transition: 0.3s;
-        }
-        .benefit:hover {
-            transform: translateY(-10px); /* Lift the card on hover */
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-        .benefit img {
-            width: 70px;
-            height: 70px;
-            margin-bottom: 20px;
-        }
-        .resources {
-            background: #fff;
-            padding: 50px 20px;
-        }
-        .resources img {
-            width: 100%;
-            max-width: 600px;
-            display: block;
-            margin: 20px auto;
-            border-radius: 10px;
-        }
-        .contact {
-            background: #3b5998;
-            color: white;
-            padding: 50px 20px;
-            text-align: center;
-        }
-        .contact form input,
-        .contact form textarea {
-            width: 80%;
-            padding: 10px;
-            margin: 10px;
-            border-radius: 8px;
-            border: none;
-            font-size: 1.1em;
-        }
-        .contact form button {
-            background: #ff6600;
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 30px;
-            font-size: 1.2em;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .contact form button:hover {
-            background: #cc5200;
-        }
-        .footer {
-            background: #3b5998;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-    </style>
+    <title>Global Logistics Student</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <nav>
-        <a href="#hero">Home</a>
-        <a href="#study-topics">Study Topics</a>
-        <a href="#resources">Resources</a>
-        <a href="#contact">Contact</a>
-    </nav>
-    <div class="hero" id="hero">
-        <h1>Welcome to the Global Logistics Study Hub</h1>
-        <p>A community for students to collaborate, learn, and master logistics together.</p>
-        <a href="#resources" class="cta">Explore Resources</a>
-    </div>
-    <div class="container" id="study-topics">
-        <h2>Study Topics</h2>
-        <div class="benefits">
-            <div class="benefit">
-                <img src="images/supply-chain.png" alt="Supply Chain">
-                <h3>Supply Chains</h3>
-                <p>Understand global supply chain management strategies and techniques.</p>
-            </div>
-            <div class="benefit">
-                <img src="images/global-trade.png" alt="Global Trade">
-                <h3>Global Trade</h3>
-                <p>Learn about international trade laws, agreements, and logistics operations.</p>
-            </div>
-            <div class="benefit">
-                <img src="images/case-study.png" alt="Case Studies">
-                <h3>Case Studies</h3>
-                <p>Analyze real-world logistics challenges and solutions with case studies.</p>
-            </div>
+    <header>
+        <h1>Welcome to My Global Logistics Portfolio</h1>
+        <nav>
+            <ul>
+                <li><a href="#about">About Me</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#resources">Resources</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="about">
+        <h2>About Me</h2>
+        <p>Hello! I'm a student specializing in Global Logistics. This portfolio showcases my work and achievements in this field.</p>
+    </section>
+
+    <section id="projects">
+        <h2>My Projects</h2>
+        <div class="project">
+            <h3>Project Title 1</h3>
+            <p>Description of Project 1.</p>
         </div>
-    </div>
-    <div class="resources" id="resources">
-        <h2>Study Resources</h2>
-        <img src="images/logistics-books.jpg" alt="Logistics Books">
-        <ul>
-            <li><a href="#">Logistics 101 Guide (PDF)</a></li>
-            <li><a href="#">International Trade Laws Overview</a></li>
-            <li><a href="#">Supply Chain Case Studies</a></li>
-            <li><a href="#">Join Our Discord Study Group</a></li>
-        </ul>
-    </div>
-    <div class="contact" id="contact">
-        <h2>Contact Us</h2>
-        <p>Have questions or want to join our study sessions? Get in touch!</p>
-        <form>
-            <input type="text" placeholder="Your Name" required><br>
-            <input type="email" placeholder="Your Email" required><br>
-            <textarea placeholder="Your Message" required></textarea><br>
-            <button type="submit">Send Message</button>
+        <div class="project">
+            <h3>Project Title 2</h3>
+            <p>Description of Project 2.</p>
+        </div>
+    </section>
+
+    <section id="resources">
+        <h2>Resources</h2>
+        <div class="resource">
+            <h3>Document Storage</h3>
+            <ul>
+                <li><a href="document1.pdf">Document 1</a></li>
+                <li><a href="document2.pdf">Document 2</a></li>
+            </ul>
+        </div>
+        <div class="resource">
+            <h3>Additional Learning</h3>
+            <ul>
+                <li><a href="resource1.html">Resource 1</a></li>
+                <li><a href="resource2.html">Resource 2</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Me</h2>
+        <form action="submit_form.php" method="post">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required></textarea>
+            <button type="submit">Submit</button>
         </form>
-    </div>
-    <div class="footer">
-        <p>&copy; 2025 Global Logistics Study Hub. Built by students, for students.</p>
-    </div>
+    </section>
+
+    <footer>
+        <p>© 2025 Global Logistics Student</p>
+    </footer>
 </body>
 </html>

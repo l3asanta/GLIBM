@@ -3,192 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basanta's Global Logistics Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Global Logistics Assignment Submission</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-        }
-        header {
-            background-color: #0073e6;
-            color: #fff;
-            padding: 20px 0;
-            text-align: center;
-        }
-        nav ul {
-            list-style: none;
+        /* Reset and General Styles */
+        * {
+            margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
             display: flex;
             justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        nav ul li {
-            margin: 0 15px;
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
         }
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold.
-        }
-        section {
-            padding: 20px;
-            margin: 20px auto;
-            max-width: 800px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px.
-        }
-        footer {
+
+        header {
             text-align: center;
-            padding: 10px;
-            background-color: #0073e6;
-            color: #fff;
-            margin-top: 20px.
+            margin-bottom: 30px;
         }
-        .project, .resource {
-            border-bottom: 1px solid #ddd;
-            padding: 10px 0.
+
+        header h1 {
+            font-size: 28px;
+            color: #4CAF50;
+            margin-bottom: 10px;
+            font-weight: 700;
         }
-        .skills-chart {
+
+        header p {
+            color: #777;
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="file"] {
             width: 100%;
-            height: 400px;
-            margin: 20px 0.
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            outline: none;
+            transition: border 0.3s ease;
         }
-        .map {
+
+        .form-group input[type="text"]:hover,
+        .form-group input[type="file"]:hover {
+            border-color: #4CAF50;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="file"]:focus {
+            border-color: #66bb6a;
+        }
+
+        button {
             width: 100%;
-            height: 400px;
-            margin: 20px 0.
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .response {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: #388e3c;
+        }
+
+        /* Add animation to the response message */
+        .response.success {
+            color: #388e3c;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .response.error {
+            color: #d32f2f;
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Animation for the response message */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
     </style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to Basanta's Global Logistics Portfolio</h1>
-        <nav>
-            <ul>
-                <li><a href="#about">About Me</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#resources">Resources</a></li>
-                <li><a href="#blog">Blog</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <section id="about">
-        <h2>About Me</h2>
-        <p>Hello! I'm Basanta, a student specializing in Global Logistics. This portfolio showcases my work and achievements in this field. My student number is 2217483.</p>
-        <video width="100%" controls>
-            <source src="intro_video.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </section>
+    <div class="container">
+        <header>
+            <h1>Global Logistics Assignment Submission</h1>
+            <p>Class: Global Logistics | Name: Basanta | Student No: 2217483</p>
+        </header>
 
-    <section id="projects">
-        <h2>My Projects</h2>
-        <div class="project">
-            <h3>Project Title 1</h3>
-            <p>Description of Project 1.</p>
-        </div>
-        <div class="project">
-            <h3>Project Title 2</h3>
-            <p>Description of Project 2.</p>
-        </div>
-    </section>
-
-    <section id="resources">
-        <h2>Resources</h2>
-        <div class="resource">
-            <h3>Document Storage</h3>
-            <ul>
-                <li><a href="document1.pdf">Document 1</a></li>
-                <li><a href="document2.pdf">Document 2</a></li>
-            </ul>
-        </div>
-        <div class="resource">
-            <h3>Additional Learning</h3>
-            <ul>
-                <li><a href="resource1.html">Resource 1</a></li>
-                <li><a href="resource2.html">Resource 2</a></li>
-            </ul>
-        </div>
-    </section>
-
-    <section id="blog">
-        <h2>Blog</h2>
-        <p>Welcome to my blog! Here, I share my experiences, industry trends, and insights in the field of global logistics.</p>
-    </section>
-
-    <section id="contact">
-        <h2>Contact Me</h2>
-        <form action="submit_form.php" method="post">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" required></textarea>
-            <button type="submit">Submit</button>
+        <form id="assignment-form" action="#" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="student-name">Student Name:</label>
+                <input type="text" id="student-name" name="student-name" value="Basanta" readonly>
+            </div>
+            <div class="form-group">
+                <label for="student-id">Student ID:</label>
+                <input type="text" id="student-id" name="student-id" value="2217483" readonly>
+            </div>
+            <div class="form-group">
+                <label for="assignment-file">Upload Assignment:</label>
+                <input type="file" id="assignment-file" name="assignment-file" required>
+            </div>
+            <button type="submit" id="submit-btn">Submit Assignment</button>
         </form>
-        <h3>Social Media</h3>
-        <p>Connect with me on <a href="#">LinkedIn</a>, <a href="#">Twitter</a>, and more.</p>
-        <h3>Newsletter</h3>
-        <form action="subscribe.php" method="post">
-            <label for="email">Email:</label>
-            <input type="email" id="newsletter-email" name="email" required>
-            <button type="submit">Subscribe</button>
-        </form>
-    </section>
 
-    <section>
-        <h2>Skills Chart</h2>
-        <canvas id="skillsChart" class="skills-chart"></canvas>
-    </section>
-
-    <section>
-        <h2>Interactive Map</h2>
-        <div id="map" class="map"></div>
-    </section>
-
-    <footer>
-        <p>© 2025 Basanta - Global Logistics Student</p>
-    </footer>
+        <div id="response" class="response"></div>
+    </div>
 
     <script>
-        const ctx = document.getElementById('skillsChart').getContext('2d');
-        const skillsChart = new Chart(ctx, {
-            type: 'radar',
-            data: {
-                labels: ['Supply Chain Management', 'Transport Logistics', 'Inventory Management', 'Warehousing', 'International Trade'],
-                datasets: [{
-                    label: 'Skills',
-                    data: [90, 80, 85, 75, 70],
-                    backgroundColor: 'rgba(0, 115, 230, 0.2)',
-                    borderColor: 'rgba(0, 115, 230, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scale: {
-                    ticks: { beginAtZero: true }
-                }
+        document.getElementById('assignment-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevents page reload on form submission
+
+            const fileInput = document.getElementById('assignment-file');
+            if (fileInput.files.length === 0) {
+                showResponse('Please select an assignment file to upload.', 'error');
+                return;
             }
+
+            // Mock file upload handling
+            const formData = new FormData();
+            formData.append('student-name', document.getElementById('student-name').value);
+            formData.append('student-id', document.getElementById('student-id').value);
+            formData.append('assignment-file', fileInput.files[0]);
+
+            // For demonstration, we'll simulate a successful submission
+            setTimeout(function() {
+                showResponse('Assignment Submitted Successfully!', 'success');
+                fileInput.value = ''; // Reset file input
+            }, 1000);
         });
 
-        function initMap() {
-            var map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: 0, lng: 0 },
-                zoom: 2
-            });
-            var marker = new google.maps.Marker({
-                position: { lat: 0, lng: 0 },
-                map: map,
-                title: 'Project Location'
-            });
+        function showResponse(message, type) {
+            const responseElement = document.getElementById('response');
+            responseElement.className = 'response ' + type;
+            responseElement.textContent = message;
         }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </body>
 </html>

@@ -42,22 +42,31 @@ export default function AssignmentSubmission() {
   };
 
   return (
-    <div className="flex flex-col items-center p-6 space-y-6 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-extrabold text-blue-700">Assignment Submission - Global Logistics</h1>
-      <h2 className="text-lg font-medium text-gray-700">Student: Basanta (ID: 2217483)</h2>
-      <Card className="w-full max-w-lg p-6 shadow-lg rounded-2xl bg-white">
+    <div className="flex flex-col items-center p-8 space-y-6 bg-gradient-to-r from-blue-100 to-purple-100 min-h-screen">
+      <h1 className="text-4xl font-extrabold text-blue-800 text-center">Assignment Submission - Global Logistics</h1>
+      <h2 className="text-lg font-medium text-gray-800">Student: Basanta (ID: 2217483)</h2>
+      <Card className="w-full max-w-lg p-8 shadow-xl rounded-3xl bg-white">
         <CardContent className="space-y-6">
           {!submitted ? (
             <>
-              <Label htmlFor="file" className="text-lg font-medium text-gray-700">Upload Assignment:</Label>
-              <Input type="file" id="file" onChange={handleFileChange} className="border-2 border-blue-500 p-2 rounded-lg" />
-              <Button onClick={handleSubmit} disabled={!assignment} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+              <Label htmlFor="file" className="text-lg font-semibold text-gray-700">Upload Your Assignment</Label>
+              <Input 
+                type="file" 
+                id="file" 
+                onChange={handleFileChange} 
+                className="border-2 border-blue-500 p-3 rounded-lg shadow-md w-full"
+              />
+              <Button 
+                onClick={handleSubmit} 
+                disabled={!assignment} 
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200"
+              >
                 Submit Assignment
               </Button>
             </>
           ) : (
             <>
-              <p className="text-green-600 font-bold text-lg">Assignment Submitted Successfully!</p>
+              <p className="text-green-600 font-bold text-xl">Assignment Submitted Successfully!</p>
               <p className="text-gray-700">File Name: {assignment?.name}</p>
               <a
                 href={URL.createObjectURL(assignment)}
@@ -69,21 +78,31 @@ export default function AssignmentSubmission() {
               </a>
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant="outline" className="w-full border-2 border-gray-500 text-gray-700 hover:bg-gray-200 rounded-lg">
+                  <Button variant="outline" className="w-full border-2 border-gray-500 text-gray-700 hover:bg-gray-200 rounded-lg py-3 px-4 mt-4">
                     Edit / Delete
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="p-6 space-y-4 bg-gray-50 shadow-md rounded-lg">
-                  <Label htmlFor="pin" className="text-lg font-medium text-gray-700">Enter PIN:</Label>
+                <DialogContent className="p-8 space-y-6 bg-gray-50 shadow-lg rounded-2xl">
+                  <Label htmlFor="pin" className="text-lg font-semibold text-gray-700">Enter PIN to Edit or Delete</Label>
                   <Input
                     type="password"
                     id="pin"
                     value={pin}
                     onChange={(e) => setPin(e.target.value)}
-                    className="border-2 border-gray-400 p-2 rounded-lg w-full"
+                    className="border-2 border-gray-400 p-3 rounded-lg w-full shadow-md"
                   />
-                  <Button onClick={handleEdit} className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">Edit</Button>
-                  <Button onClick={handleDelete} className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg">Delete</Button>
+                  <Button 
+                    onClick={handleEdit} 
+                    className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200"
+                  >
+                    Edit Assignment
+                  </Button>
+                  <Button 
+                    onClick={handleDelete} 
+                    className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200"
+                  >
+                    Delete Assignment
+                  </Button>
                 </DialogContent>
               </Dialog>
             </>

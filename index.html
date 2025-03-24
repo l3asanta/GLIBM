@@ -1,135 +1,95 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Global Logistics - Assignment Submission</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background-color: #f4f4f4;
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      background-color: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    h1 {
-      text-align: center;
-    }
-    input[type="file"] {
-      margin-bottom: 10px;
-    }
-    .assignments-list {
-      margin-top: 20px;
-    }
-    .assignment-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px;
-      background-color: #e9e9e9;
-      margin-bottom: 10px;
-      border-radius: 5px;
-    }
-    button {
-      padding: 5px 10px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button.delete {
-      background-color: #dc3545;
-    }
-  </style>
-</head>
-<body>
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 
-  <div class="container">
-    <h1>Assignment Submission</h1>
+export default function AssignmentSubmission() {
+  const [assignment, setAssignment] = useState(null);
+  const [submitted, setSubmitted] = useState(false);
+  const [pin, setPin] = useState("");
+  const correctPin = "1111";
 
-    <form id="assignmentForm">
-      <input type="file" id="assignmentFile" required>
-      <button type="submit">Submit Assignment</button>
-    </form>
+  const handleFileChange = (event) => {
+    setAssignment(event.target.files[0]);
+  };
 
-    <div class="assignments-list" id="assignmentsList"></div>
-  </div>
+  const handleSubmit = () => {
+    if (assignment) {
+      setSubmitted(true);
+    }
+  };
 
-  <div id="deleteModal" style="display: none;">
-    <div style="padding: 20px; background: white; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
-      <h3>Enter PIN to delete or edit the assignment</h3>
-      <input type="password" id="pinInput">
-      <button onclick="verifyPin()">Verify PIN</button>
+  const handleEdit = () => {
+    if (pin === correctPin) {
+      setSubmitted(false);
+      setAssignment(null);
+      setPin("");
+    } else {
+      alert("Incorrect PIN. Editing denied.");
+    }
+  };
+
+  const handleDelete = () => {
+    if (pin === correctPin) {
+      setSubmitted(false);
+      setAssignment(null);
+      setPin("");
+    } else {
+      alert("Incorrect PIN. Deletion denied.");
+    }
+  };
+
+  return (
+    <div className="flex flex-col items-center p-6 space-y-6 bg-gray-100 min-h-screen">
+      <h1 className="text-3xl font-extrabold text-blue-700">Assignment Submission - Global Logistics</h1>
+      <h2 className="text-lg font-medium text-gray-700">Student: Basanta (ID: 2217483)</h2>
+      <Card className="w-full max-w-lg p-6 shadow-lg rounded-2xl bg-white">
+        <CardContent className="space-y-6">
+          {!submitted ? (
+            <>
+              <Label htmlFor="file" className="text-lg font-medium text-gray-700">Upload Assignment:</Label>
+              <Input type="file" id="file" onChange={handleFileChange} className="border-2 border-blue-500 p-2 rounded-lg" />
+              <Button onClick={handleSubmit} disabled={!assignment} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+                Submit Assignment
+              </Button>
+            </>
+          ) : (
+            <>
+              <p className="text-green-600 font-bold text-lg">Assignment Submitted Successfully!</p>
+              <p className="text-gray-700">File Name: {assignment?.name}</p>
+              <a
+                href={URL.createObjectURL(assignment)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 underline font-medium hover:text-blue-800"
+              >
+                Open Submitted Assignment
+              </a>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" className="w-full border-2 border-gray-500 text-gray-700 hover:bg-gray-200 rounded-lg">
+                    Edit / Delete
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="p-6 space-y-4 bg-gray-50 shadow-md rounded-lg">
+                  <Label htmlFor="pin" className="text-lg font-medium text-gray-700">Enter PIN:</Label>
+                  <Input
+                    type="password"
+                    id="pin"
+                    value={pin}
+                    onChange={(e) => setPin(e.target.value)}
+                    className="border-2 border-gray-400 p-2 rounded-lg w-full"
+                  />
+                  <Button onClick={handleEdit} className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">Edit</Button>
+                  <Button onClick={handleDelete} className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg">Delete</Button>
+                </DialogContent>
+              </Dialog>
+            </>
+          )}
+        </CardContent>
+      </Card>
     </div>
-  </div>
-
-  <script>
-    const assignments = [];
-
-    document.getElementById('assignmentForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      const fileInput = document.getElementById('assignmentFile');
-      const file = fileInput.files[0];
-
-      if (file) {
-        // Store the file info along with Dropbox URL (for cloud storage)
-        const fileURL = "https://www.dropbox.com/scl/fo/15f9odl21bg136fhkkevm/ACM7O6iyOwzXDHOrFGnM4Sk?dl=1"; // Dropbox link
-        const assignment = {
-          name: file.name,
-          url: fileURL
-        };
-
-        assignments.push(assignment);
-        displayAssignments();
-        fileInput.value = ''; // Clear file input after submission
-      }
-    });
-
-    function displayAssignments() {
-      const assignmentsList = document.getElementById('assignmentsList');
-      assignmentsList.innerHTML = '';
-      assignments.forEach((assignment, index) => {
-        const assignmentItem = document.createElement('div');
-        assignmentItem.classList.add('assignment-item');
-        assignmentItem.innerHTML = `
-          <span>${assignment.name}</span>
-          <div>
-            <a href="${assignment.url}" target="_blank">View Assignment</a>
-            <button class="delete" onclick="confirmDelete(${index})">Delete</button>
-          </div>
-        `;
-        assignmentsList.appendChild(assignmentItem);
-      });
-    }
-
-    function confirmDelete(index) {
-      document.getElementById('deleteModal').style.display = 'block';
-      window.indexToDelete = index; // Store the index of the item to delete
-    }
-
-    function verifyPin() {
-      const pinInput = document.getElementById('pinInput').value;
-      if (pinInput === '1111') {
-        deleteAssignment();
-        document.getElementById('deleteModal').style.display = 'none';
-      } else {
-        alert('Incorrect PIN!');
-      }
-    }
-
-    function deleteAssignment() {
-      const assignmentIndex = window.indexToDelete;
-      assignments.splice(assignmentIndex, 1);
-      displayAssignments();
-    }
-  </script>
-
-</body>
-</html>
+  );
+}

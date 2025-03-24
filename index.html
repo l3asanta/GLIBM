@@ -210,7 +210,11 @@
     </div>
 
     <script>
-        let assignments = []; // To store the submitted assignments
+        // Load assignments from localStorage when the page loads
+        let assignments = JSON.parse(localStorage.getItem('assignments')) || [];
+
+        // Display existing assignments on page load
+        displayAssignments();
 
         document.getElementById('assignment-form').addEventListener('submit', function(e) {
             e.preventDefault(); // Prevents page reload on form submission
@@ -235,6 +239,9 @@
                 filename: file.name,
                 fileURL: URL.createObjectURL(file)
             });
+
+            // Save the assignments to localStorage
+            localStorage.setItem('assignments', JSON.stringify(assignments));
 
             showResponse('Assignment Submitted Successfully!', 'success');
             fileInput.value = ''; // Reset file input

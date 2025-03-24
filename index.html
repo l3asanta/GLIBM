@@ -18,8 +18,9 @@
             color: #333;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             height: 100vh;
+            padding-top: 50px;
         }
 
         .container {
@@ -61,7 +62,8 @@
         }
 
         .form-group input[type="text"],
-        .form-group input[type="file"] {
+        .form-group input[type="file"],
+        .form-group input[type="password"] {
             width: 100%;
             padding: 12px;
             font-size: 16px;
@@ -72,12 +74,14 @@
         }
 
         .form-group input[type="text"]:hover,
-        .form-group input[type="file"]:hover {
+        .form-group input[type="file"]:hover,
+        .form-group input[type="password"]:hover {
             border-color: #4CAF50;
         }
 
         .form-group input[type="text"]:focus,
-        .form-group input[type="file"]:focus {
+        .form-group input[type="file"]:focus,
+        .form-group input[type="password"]:focus {
             border-color: #66bb6a;
         }
 
@@ -105,25 +109,63 @@
             color: #388e3c;
         }
 
-        /* Add animation to the response message */
-        .response.success {
-            color: #388e3c;
-            animation: fadeIn 1s ease-out;
+        .assignment-list {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .response.error {
-            color: #d32f2f;
-            animation: fadeIn 1s ease-out;
+        .assignment-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        /* Animation for the response message */
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
+        .assignment-item button {
+            background-color: #388e3c;
+            border-radius: 5px;
+            padding: 8px 16px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .assignment-item button:hover {
+            background-color: #2e7d32;
+        }
+
+        /* Password Protection */
+        .password-container {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .password-container input {
+            width: 70%;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+
+        .password-container button {
+            width: 100%;
+            padding: 15px;
+            background-color: #3f51b5;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .password-container button:hover {
+            background-color: #303f9f;
         }
 
     </style>
@@ -153,9 +195,23 @@
         </form>
 
         <div id="response" class="response"></div>
+
+        <!-- Password Entry Section -->
+        <div id="password-container" class="password-container">
+            <input type="password" id="password" placeholder="Enter Password to View Submissions">
+            <button onclick="checkPassword()">Enter</button>
+        </div>
+
+        <!-- Assignment List -->
+        <div id="assignment-list" class="assignment-list" style="display:none;">
+            <h3>Submitted Assignments:</h3>
+            <div id="submitted-assignments"></div>
+        </div>
     </div>
 
     <script>
+        let assignments = []; // To store the submitted assignments
+
         document.getElementById('assignment-form').addEventListener('submit', function(e) {
             e.preventDefault(); // Prevents page reload on form submission
 
@@ -165,23 +221,68 @@
                 return;
             }
 
-            // Mock file upload handling
+            // Simulate file upload and saving the assignment
             const formData = new FormData();
             formData.append('student-name', document.getElementById('student-name').value);
             formData.append('student-id', document.getElementById('student-id').value);
             formData.append('assignment-file', fileInput.files[0]);
 
-            // For demonstration, we'll simulate a successful submission
-            setTimeout(function() {
-                showResponse('Assignment Submitted Successfully!', 'success');
-                fileInput.value = ''; // Reset file input
-            }, 1000);
+            // Add the file name and student info to the assignments array
+            const file = fileInput.files[0];
+            assignments.push({
+                name: document.getElementById('student-name').value,
+                id: document.getElementById('student-id').value,
+                filename: file.name,
+                fileURL: URL.createObjectURL(file)
+            });
+
+            showResponse('Assignment Submitted Successfully!', 'success');
+            fileInput.value = ''; // Reset file input
+            displayAssignments(); // Display assignments list
         });
 
+        // Show response messages
         function showResponse(message, type) {
             const responseElement = document.getElementById('response');
             responseElement.className = 'response ' + type;
             responseElement.textContent = message;
+        }
+
+        // Display submitted assignments
+        function displayAssignments() {
+            const assignmentContainer = document.getElementById('submitted-assignments');
+            assignmentContainer.innerHTML = ''; // Clear current list
+
+            assignments.forEach((assignment, index) => {
+                const assignmentItem = document.createElement('div');
+                assignmentItem.className = 'assignment-item';
+                assignmentItem.innerHTML = `
+                    <span>${assignment.name} (${assignment.id}) - ${assignment.filename}</span>
+                    <button onclick="viewAssignment(${index})">View</button>
+                `;
+                assignmentContainer.appendChild(assignmentItem);
+            });
+        }
+
+        // View the assignment
+        function viewAssignment(index) {
+            const assignment = assignments[index];
+            const a = document.createElement('a');
+            a.href = assignment.fileURL;
+            a.target = '_blank';
+            a.textContent = 'Click here to view the assignment: ' + assignment.filename;
+            a.click();
+        }
+
+        // Show password entry for accessing assignments
+        function checkPassword() {
+            const password = document.getElementById('password').value;
+            if (password === '1111') {
+                document.getElementById('password-container').style.display = 'none';
+                document.getElementById('assignment-list').style.display = 'block';
+            } else {
+                alert('Incorrect password');
+            }
         }
     </script>
 

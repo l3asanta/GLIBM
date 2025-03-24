@@ -202,91 +202,25 @@
             <button onclick="checkPassword()">Enter</button>
         </div>
 
-        <!-- Assignment List -->
-        <div id="assignment-list" class="assignment-list" style="display:none;">
-            <h3>Submitted Assignments:</h3>
-            <div id="submitted-assignments"></div>
+        <!-- Dropbox Link Section for Cloud Storage -->
+        <div id="dropbox-link" class="assignment-list" style="display: none;">
+            <h3>Upload Your Assignment to Dropbox</h3>
+            <p>Click the button below to upload your assignment to the cloud.</p>
+            <a href="https://www.dropbox.com/scl/fo/15f9odl21bg136fhkkevm/ACM7O6iyOwzXDHOrFGnM4Sk?rlkey=bcp3q31dm76slae1lzfvrt1hx&st=tnwoixk9&dl=0" 
+               target="_blank">
+                <button>Upload to Dropbox</button>
+            </a>
         </div>
+
     </div>
 
     <script>
-        // Load assignments from localStorage when the page loads
-        let assignments = JSON.parse(localStorage.getItem('assignments')) || [];
-
-        // Display existing assignments on page load
-        displayAssignments();
-
-        document.getElementById('assignment-form').addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevents page reload on form submission
-
-            const fileInput = document.getElementById('assignment-file');
-            if (fileInput.files.length === 0) {
-                showResponse('Please select an assignment file to upload.', 'error');
-                return;
-            }
-
-            // Simulate file upload and saving the assignment
-            const formData = new FormData();
-            formData.append('student-name', document.getElementById('student-name').value);
-            formData.append('student-id', document.getElementById('student-id').value);
-            formData.append('assignment-file', fileInput.files[0]);
-
-            // Add the file name and student info to the assignments array
-            const file = fileInput.files[0];
-            assignments.push({
-                name: document.getElementById('student-name').value,
-                id: document.getElementById('student-id').value,
-                filename: file.name,
-                fileURL: URL.createObjectURL(file)
-            });
-
-            // Save the assignments to localStorage
-            localStorage.setItem('assignments', JSON.stringify(assignments));
-
-            showResponse('Assignment Submitted Successfully!', 'success');
-            fileInput.value = ''; // Reset file input
-            displayAssignments(); // Display assignments list
-        });
-
-        // Show response messages
-        function showResponse(message, type) {
-            const responseElement = document.getElementById('response');
-            responseElement.className = 'response ' + type;
-            responseElement.textContent = message;
-        }
-
-        // Display submitted assignments
-        function displayAssignments() {
-            const assignmentContainer = document.getElementById('submitted-assignments');
-            assignmentContainer.innerHTML = ''; // Clear current list
-
-            assignments.forEach((assignment, index) => {
-                const assignmentItem = document.createElement('div');
-                assignmentItem.className = 'assignment-item';
-                assignmentItem.innerHTML = `
-                    <span>${assignment.name} (${assignment.id}) - ${assignment.filename}</span>
-                    <button onclick="viewAssignment(${index})">View</button>
-                `;
-                assignmentContainer.appendChild(assignmentItem);
-            });
-        }
-
-        // View the assignment
-        function viewAssignment(index) {
-            const assignment = assignments[index];
-            const a = document.createElement('a');
-            a.href = assignment.fileURL;
-            a.target = '_blank';
-            a.textContent = 'Click here to view the assignment: ' + assignment.filename;
-            a.click();
-        }
-
-        // Show password entry for accessing assignments
+        // Show the Dropbox upload link when the correct password is entered
         function checkPassword() {
             const password = document.getElementById('password').value;
             if (password === '1111') {
                 document.getElementById('password-container').style.display = 'none';
-                document.getElementById('assignment-list').style.display = 'block';
+                document.getElementById('dropbox-link').style.display = 'block';
             } else {
                 alert('Incorrect password');
             }

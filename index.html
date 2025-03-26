@@ -1,114 +1,144 @@
-import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
-
-export default function AssignmentSubmission() {
-  const [assignment, setAssignment] = useState(null);
-  const [submitted, setSubmitted] = useState(false);
-  const [pin, setPin] = useState("");
-  const correctPin = "1111";
-
-  const handleFileChange = (event) => {
-    setAssignment(event.target.files[0]);
-  };
-
-  const handleSubmit = () => {
-    if (assignment) {
-      setSubmitted(true);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logistics Project Website</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #e8f5e9; /* Light green background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
+      color: #333;
     }
-  };
-
-  const handleEdit = () => {
-    if (pin === correctPin) {
-      setSubmitted(false);
-      setAssignment(null);
-      setPin("");
-    } else {
-      alert("Incorrect PIN. Editing denied.");
+    .header {
+      text-align: center;
+      background: #388e3c; /* Dark green header */
+      color: #fff;
+      padding: 40px 20px;
+      width: 100%;
+      max-width: 900px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
-  };
-
-  const handleDelete = () => {
-    if (pin === correctPin) {
-      setSubmitted(false);
-      setAssignment(null);
-      setPin("");
-    } else {
-      alert("Incorrect PIN. Deletion denied.");
+    .header h1 {
+      font-size: 3rem;
+      margin: 0;
     }
-  };
-
-  return (
-    <div className="flex flex-col items-center p-8 space-y-6 bg-gradient-to-r from-blue-100 to-purple-100 min-h-screen">
-      <h1 className="text-4xl font-extrabold text-blue-800 text-center">Assignment Submission - Global Logistics</h1>
-      <h2 className="text-lg font-medium text-gray-800">Student: Basanta (ID: 2217483)</h2>
-      <Card className="w-full max-w-lg p-8 shadow-xl rounded-3xl bg-white">
-        <CardContent className="space-y-6">
-          {!submitted ? (
-            <>
-              <Label htmlFor="file" className="text-lg font-semibold text-gray-700">Upload Your Assignment</Label>
-              <Input 
-                type="file" 
-                id="file" 
-                onChange={handleFileChange} 
-                className="border-2 border-blue-500 p-3 rounded-lg shadow-md w-full"
-              />
-              <Button 
-                onClick={handleSubmit} 
-                disabled={!assignment} 
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200"
-              >
-                Submit Assignment
-              </Button>
-            </>
-          ) : (
-            <>
-              <p className="text-green-600 font-bold text-xl">Assignment Submitted Successfully!</p>
-              <p className="text-gray-700">File Name: {assignment?.name}</p>
-              <a
-                href={URL.createObjectURL(assignment)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 underline font-medium hover:text-blue-800"
-              >
-                Open Submitted Assignment
-              </a>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="outline" className="w-full border-2 border-gray-500 text-gray-700 hover:bg-gray-200 rounded-lg py-3 px-4 mt-4">
-                    Edit / Delete
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="p-8 space-y-6 bg-gray-50 shadow-lg rounded-2xl">
-                  <Label htmlFor="pin" className="text-lg font-semibold text-gray-700">Enter PIN to Edit or Delete</Label>
-                  <Input
-                    type="password"
-                    id="pin"
-                    value={pin}
-                    onChange={(e) => setPin(e.target.value)}
-                    className="border-2 border-gray-400 p-3 rounded-lg w-full shadow-md"
-                  />
-                  <Button 
-                    onClick={handleEdit} 
-                    className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200"
-                  >
-                    Edit Assignment
-                  </Button>
-                  <Button 
-                    onClick={handleDelete} 
-                    className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200"
-                  >
-                    Delete Assignment
-                  </Button>
-                </DialogContent>
-              </Dialog>
-            </>
-          )}
-        </CardContent>
-      </Card>
+    .header h2 {
+      font-size: 1.5rem;
+      margin: 10px 0;
+    }
+    .header p {
+      font-size: 1.2rem;
+      margin-top: 5px;
+    }
+    .assignments {
+      width: 100%;
+      max-width: 900px;
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column; /* Vertical layout */
+      gap: 20px;
+      justify-items: center;
+    }
+    .assignment-box {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      border: 2px solid #388e3c; /* Matching green color */
+      width: 100%;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .assignment-box:hover {
+      transform: scale(1.05);
+      background: #f1f8e9; /* Light green on hover */
+    }
+    .assignment-box a {
+      text-decoration: none;
+      color: #388e3c;
+      font-size: 1.1rem;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      background: #388e3c; /* Green footer */
+      color: #fff;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 900px;
+    }
+    .footer p {
+      margin: 0;
+      font-size: 1rem;
+    }
+    @media (max-width: 600px) {
+      .header h1 {
+        font-size: 2.5rem;
+      }
+      .header h2 {
+        font-size: 1.2rem;
+      }
+      .assignment-box {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Basanta</h1>
+    <h2>Logistics Assignment Submission</h2>
+    <p>Student No: 2217483</p>
+  </div>
+  
+  <!-- Assignment groups: each group includes one link for submission and one for report -->
+  <div class="assignments">
+    <div class="assignment-box">
+      <a href="noooo">
+        Logistics Process Flow: Submission
+      </a>
     </div>
-  );
-}
+    <div class="assignment-box">
+      <a href="https://example.com/assignment1-report" target="_blank">
+        Logistics Process Flow: Report
+      </a>
+    </div>
+    <div class="assignment-box">
+      <a href="crazybroo">
+        Supply Chain Model: Submission
+      </a>
+    </div>
+    <div class="assignment-box">
+      <a href="https://example.com/assignment2-report" target="_blank">
+        Supply Chain Model: Report
+      </a>
+    </div>
+    <div class="assignment-box">
+      <a href="https://example.com/assignment3" target="_blank">
+        Warehouse Layout: Submission
+      </a>
+    </div>
+    <div class="assignment-box">
+      <a href="https://example.com/assignment3-report" target="_blank">
+        Warehouse Layout: Report
+      </a>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Contact: email@gmail.com | Phone: Email me</p>
+  </div>
+
+</body>
+</html>

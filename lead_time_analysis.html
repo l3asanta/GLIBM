@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Procurement Lead Time Analyzer</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; }
+    h2 { color: #333; }
+    input[type="file"] { margin-bottom: 20px; }
+    canvas { background: white; margin: 20px 0; padding: 10px; border: 1px solid #ccc; }
+    #output { background: #fff; padding: 15px; border: 1px solid #ccc; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+
+<h2>📊 Lead Time & Bullwhip Effect Analyzer</h2>
+<input type="file" id="fileInput" accept=".csv" />
+<pre id="output">Waiting for file...</pre>
+<canvas id="leadTimeChart"></canvas>
+<canvas id="delayByMonthChart"></canvas>
+<canvas id="bullwhipChart"></canvas>
+
+<script>
+document.getElementById('fileInput').addEventListener('change', function (e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function (event) {
+    const raw = event.target.result;
+    const lines = raw.split('\n').map(line => line.trim()).filter(l => l);
+    const headers = lines[0].replace(/"/g, '').split(',');
+    const data = lines.slice(1).map(line => {
+      const values = line.replace(/"/g, '').split(',');
+      const obj = {};
+      headers.forEach((header, i) => {
+        obj[header.trim()] = values[i] ? values[i].trim() : '';
+      });
+      return obj;
+    });
+    analyzeData(data);
+  };
+  reader.readAsText(file);
+});
+
+function parseDate(str) {
+  const d = new Date(str);
+  return isNaN(d) ? null : d;
+}
+
+function analyzeData(data) {
+  const output = document.getElementById('output');
+  output.textContent = 'Analyzing...\n\n';
+
+  const leadTimes = {}, transportTimes = {}, delayByMonth = {}, disruptionDelays = {}, productTimes = {}, demandVsOrder = {};
+
+  data.forEach(row => {
+    const orderDate = parseDate(row['Order_Date']);
+    const expectedDate = parseDate(row['Expected_Delivery_Date']);
+    const actualDate = parseDate(row['Actual_Delivery_Date']);
+    if (!orderDate || !actualDate || !expectedDate) return;
+
+    const supplier = row['Supplier'];
+    const transport = row['Transportation_Mode'];
+    const product = row['Product_Category'];
+    const disruption = row['Disruption_Type'];
+    const month = actualDate.toLocaleString('default', { month: 'short' });
+
+    const leadTime = (actualDate - orderDate) / (1000 * 60 * 60 * 24);
+    const delay = (actualDate - expectedDate) / (1000 * 60 * 60 * 24);
+    const demand = parseFloat(row['Customer_Demand']) || 0;
+    const orderQty = parseFloat(row['Order_Quantity']) || 0;
+
+    if (!leadTimes[supplier]) leadTimes[supplier] = [];
+    leadTimes[supplier].push(leadTime);
+
+    if (!transportTimes[transport]) transportTimes[transport] = [];
+    transportTimes[transport].push(leadTime);
+
+    if (!delayByMonth[month]) delayByMonth[month] = [];
+    delayByMonth[month].push(delay);
+
+    if (disruption && disruption !== 'None') {
+      if (!disruptionDelays[disruption]) disruptionDelays[disruption] = [];
+      disruptionDelays[disruption].push(delay);
+    }
+
+    if (!productTimes[product]) productTimes[product] = [];
+    productTimes[product].push(leadTime);
+
+    if (!demandVsOrder[month]) demandVsOrder[month] = { demand: 0, order: 0 };
+    demandVsOrder[month].demand += demand;
+    demandVsOrder[month].order += orderQty;
+  });
+
+  const average = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
+
+  const topSupplier = Object.entries(leadTimes).sort((a, b) => average(b[1]) - average(a[1]))[0];
+  const bestTransport = Object.entries(transportTimes).sort((a, b) => average(a[1]) - average(b[1]))[0];
+  const worstMonth = Object.entries(delayByMonth).sort((a, b) => average(b[1]) - average(a[1]))[0];
+  const worstDisruption = Object.entries(disruptionDelays).sort((a, b) => average(b[1]) - average(a[1]))[0];
+  const bestProduct = Object.entries(productTimes).sort((a, b) => average(a[1]) - average(b[1]))[0];
+
+  output.textContent += `🔍 Supplier with highest avg lead time: ${topSupplier[0]} (${average(topSupplier[1]).toFixed(2)} days)\n`;
+  output.textContent += `🚚 Fastest transport mode: ${bestTransport[0]} (${average(bestTransport[1]).toFixed(2)} days)\n`;
+  output.textContent += `📆 Month with worst delays: ${worstMonth[0]} (${average(worstMonth[1]).toFixed(2)} days)\n`;
+  output.textContent += `⚠️ Worst disruption type: ${worstDisruption[0]} (${average(worstDisruption[1]).toFixed(2)} days)\n`;
+  output.textContent += `📦 Product category with shortest lead time: ${bestProduct[0]} (${average(bestProduct[1]).toFixed(2)} days)\n`;
+
+  new Chart(document.getElementById('leadTimeChart'), {
+    type: 'bar',
+    data: {
+      labels: Object.keys(leadTimes),
+      datasets: [{ label: 'Avg Lead Time (days)', data: Object.values(leadTimes).map(average), backgroundColor: 'steelblue' }]
+    },
+    options: {
+      plugins: { title: { display: true, text: 'Average Lead Time by Supplier' } },
+      responsive: true
+    }
+  });
+
+  new Chart(document.getElementById('delayByMonthChart'), {
+    type: 'line',
+    data: {
+      labels: Object.keys(delayByMonth),
+      datasets: [{ label: 'Avg Delay (days)', data: Object.values(delayByMonth).map(average), borderColor: 'tomato', fill: false }]
+    },
+    options: {
+      plugins: { title: { display: true, text: 'Monthly Delivery Delays' } },
+      responsive: true
+    }
+  });
+
+  new Chart(document.getElementById('bullwhipChart'), {
+    type: 'bar',
+    data: {
+      labels: Object.keys(demandVsOrder),
+      datasets: [
+        { label: 'Customer Demand', data: Object.values(demandVsOrder).map(m => m.demand), backgroundColor: 'green' },
+        { label: 'Order Quantity', data: Object.values(demandVsOrder).map(m => m.order), backgroundColor: 'orange' }
+      ]
+    },
+    options: {
+      plugins: { title: { display: true, text: 'Bullwhip Effect: Demand vs Orders' } },
+      responsive: true
+    }
+  });
+}
+</script>
+
+</body>
+</html>

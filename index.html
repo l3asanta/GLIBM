@@ -1,3 +1,16 @@
+None selectedMore actions
+
+Skip to content
+Using Gmail with screen readers
+in:sent 
+Enable desktop notifications for Gmail.
+   OK  No, thanks
+Conversations
+0.09 GB of 15 GB used
+Terms · Privacy · Programme Policies
+Last account activity: 6 minutes ago
+Details
+il. Press Tab to insert.
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +22,7 @@
       margin: 0;
       padding: 0;
       font-family: 'Arial', sans-serif;
-      background-color: #e8f5e9;
+      background-color: #e8f5e9; /* Light green background */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -19,7 +32,7 @@
     }
     .header {
       text-align: center;
-      background: #388e3c;
+      background: #388e3c; /* Dark green header */
       color: #fff;
       padding: 40px 20px;
       width: 100%;
@@ -44,7 +57,7 @@
       max-width: 900px;
       margin-top: 40px;
       display: flex;
-      flex-direction: column;
+      flex-direction: column; /* Vertical layout */
       gap: 20px;
       justify-items: center;
     }
@@ -52,30 +65,27 @@
       background: #fff;
       padding: 20px;
       border-radius: 12px;
-      border: 2px solid #388e3c;
+      border: 2px solid #388e3c; /* Matching green color */
       width: 100%;
       text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s ease;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     .assignment-box:hover {
       transform: scale(1.05);
-      background: #f1f8e9;
+      background: #f1f8e9; /* Light green on hover */
     }
     .assignment-box a {
       text-decoration: none;
       color: #388e3c;
       font-size: 1.1rem;
     }
-    iframe {
-      width: 100%;
-      height: 600px;
-      border: none;
-    }
     .footer {
       text-align: center;
       margin-top: 40px;
       padding: 20px;
-      background: #388e3c;
+      background: #388e3c; /* Green footer */
       color: #fff;
       border-radius: 15px;
       width: 100%;
@@ -95,9 +105,6 @@
       .assignment-box {
         padding: 15px;
       }
-      iframe {
-        height: 400px;
-      }
     }
   </style>
 </head>
@@ -107,40 +114,43 @@
     <h2>Logistics Assignment Submission</h2>
     <p>Student No: 2217483</p>
   </div>
-  
+
+  <!-- Assignment groups: each group includes one link for submission and one for report -->
   <div class="assignments">
     <div class="assignment-box">
-      <a href="https://excalidraw.com/#json=xoHvXzm33VxE8i2CaEc6G,_gRjGPwIm66NcVmQzOBeDA" target="_blank">
+      <a href="https://excalidraw.com/#json=xoHvXzm33VxE8i2CaEc6G,_gRjGPwIm66NcVmQzOBeDA">
+        Logistics Process Flow: Submission
         EXCALIDRAW
       </a>
     </div>
-
     <div class="assignment-box">
       <a href="webapp.html">
+        Logistics Process Flow: Webapp
         WEBAPP
       </a>
     </div>
-
     <div class="assignment-box">
       <a href="lead_time_analysis.html">
+        Supply Chain Model: BULLWHIP LEADTIME
        BULLWHIP LEADTIME
       </a>
     </div>
-
-    <!-- Embedded Excel Heatmap -->
     <div class="assignment-box">
-      <h3>Heatmap (Excel)</h3>
-      <iframe src="https://view.officeapps.live.com/op/embed.aspx?src=https://raw.githubusercontent.com/basanta2217483/logistics-project/main/warehouse%20heatmap.xlsx"></iframe>
+      <a href="warehouse heatmap.xlsx">
+        Supply Chain Model: Heatmap
+        Heatmap
+      </a>
     </div>
-
-    <!-- Embedded Word Document -->
     <div class="assignment-box">
-      <h3>LOGISTICS INTRODUCTION (Word)</h3>
-      <iframe src="https://view.officeapps.live.com/op/embed.aspx?src=https://raw.githubusercontent.com/basanta2217483/logistics-project/main/Logistics%20Research.docx"></iframe>
+      <a href="https://example.com/assignment3" target="_blank">
+        Warehouse Layout: Submission
+      <a href="Logistics Research.docx">
+         LOGISTICS INTRODUCTION
+      </a>
     </div>
-
     <div class="assignment-box">
       <a href="https://example.com/assignment3-report" target="_blank">
+        Warehouse Layout: Report
          INTRODUCTION
       </a>
     </div>
@@ -149,5 +159,8 @@
   <div class="footer">
     <p>Contact: email@gmail.com | Phone: Email me</p>
   </div>
+
 </body>
 </html>
+index.html
+Displaying index.html.

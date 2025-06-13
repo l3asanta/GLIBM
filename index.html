@@ -14,50 +14,30 @@ il. Press Tab to insert.
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Logistics Project Website</title>
-  <style>
-    body {
+@@ -22,7 +9,7 @@
       margin: 0;
       padding: 0;
       font-family: 'Arial', sans-serif;
       background-color: #e8f5e9; /* Light green background */
+      background-color: #e8f5e9;
       display: flex;
       justify-content: center;
       align-items: center;
-      flex-direction: column;
-      min-height: 100vh;
-      color: #333;
+@@ -32,7 +19,7 @@
     }
     .header {
       text-align: center;
       background: #388e3c; /* Dark green header */
+      background: #388e3c;
       color: #fff;
       padding: 40px 20px;
       width: 100%;
-      max-width: 900px;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-    .header h1 {
-      font-size: 3rem;
-      margin: 0;
-    }
-    .header h2 {
-      font-size: 1.5rem;
-      margin: 10px 0;
-    }
-    .header p {
-      font-size: 1.2rem;
-      margin-top: 5px;
-    }
-    .assignments {
-      width: 100%;
+@@ -57,35 +44,38 @@
       max-width: 900px;
       margin-top: 40px;
       display: flex;
       flex-direction: column; /* Vertical layout */
+      flex-direction: column;
       gap: 20px;
       justify-items: center;
     }
@@ -66,6 +46,7 @@ il. Press Tab to insert.
       padding: 20px;
       border-radius: 12px;
       border: 2px solid #388e3c; /* Matching green color */
+      border: 2px solid #388e3c;
       width: 100%;
       text-align: center;
       cursor: pointer;
@@ -75,43 +56,38 @@ il. Press Tab to insert.
     .assignment-box:hover {
       transform: scale(1.05);
       background: #f1f8e9; /* Light green on hover */
+      background: #f1f8e9;
     }
     .assignment-box a {
       text-decoration: none;
       color: #388e3c;
       font-size: 1.1rem;
     }
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
     .footer {
       text-align: center;
       margin-top: 40px;
       padding: 20px;
       background: #388e3c; /* Green footer */
+      background: #388e3c;
       color: #fff;
       border-radius: 15px;
       width: 100%;
-      max-width: 900px;
-    }
-    .footer p {
-      margin: 0;
-      font-size: 1rem;
-    }
-    @media (max-width: 600px) {
-      .header h1 {
-        font-size: 2.5rem;
-      }
-      .header h2 {
-        font-size: 1.2rem;
-      }
+@@ -105,6 +95,9 @@
       .assignment-box {
         padding: 15px;
+      }
+      iframe {
+        height: 400px;
       }
     }
   </style>
 </head>
-<body>
-  <div class="header">
-    <h1>Basanta</h1>
-    <h2>Logistics Assignment Submission</h2>
+@@ -115,33 +108,37 @@ <h2>Logistics Assignment Submission</h2>
     <p>Student No: 2217483</p>
   </div>
 
@@ -119,43 +95,45 @@ il. Press Tab to insert.
   <div class="assignments">
     <div class="assignment-box">
       <a href="https://excalidraw.com/#json=xoHvXzm33VxE8i2CaEc6G,_gRjGPwIm66NcVmQzOBeDA">
-        Logistics Process Flow: Submission
+      <a href="https://excalidraw.com/#json=xoHvXzm33VxE8i2CaEc6G,_gRjGPwIm66NcVmQzOBeDA" target="_blank">
         EXCALIDRAW
       </a>
     </div>
+
     <div class="assignment-box">
       <a href="webapp.html">
-        Logistics Process Flow: Webapp
         WEBAPP
       </a>
     </div>
+
     <div class="assignment-box">
       <a href="lead_time_analysis.html">
-        Supply Chain Model: BULLWHIP LEADTIME
        BULLWHIP LEADTIME
       </a>
     </div>
+
+    <!-- Embedded Excel Heatmap -->
     <div class="assignment-box">
       <a href="warehouse heatmap.xlsx">
-        Supply Chain Model: Heatmap
         Heatmap
       </a>
+      <h3>Heatmap (Excel)</h3>
+      <iframe src="https://view.officeapps.live.com/op/embed.aspx?src=https://raw.githubusercontent.com/basanta2217483/logistics-project/main/warehouse%20heatmap.xlsx"></iframe>
     </div>
+
+    <!-- Embedded Word Document -->
     <div class="assignment-box">
-      <a href="https://example.com/assignment3" target="_blank">
-        Warehouse Layout: Submission
       <a href="Logistics Research.docx">
          LOGISTICS INTRODUCTION
       </a>
+      <h3>LOGISTICS INTRODUCTION (Word)</h3>
+      <iframe src="https://view.officeapps.live.com/op/embed.aspx?src=https://raw.githubusercontent.com/basanta2217483/logistics-project/main/Logistics%20Research.docx"></iframe>
     </div>
+
     <div class="assignment-box">
       <a href="https://example.com/assignment3-report" target="_blank">
-        Warehouse Layout: Report
          INTRODUCTION
-      </a>
-    </div>
-  </div>
-
+@@ -152,8 +149,5 @@ <h2>Logistics Assignment Submission</h2>
   <div class="footer">
     <p>Contact: email@gmail.com | Phone: Email me</p>
   </div>

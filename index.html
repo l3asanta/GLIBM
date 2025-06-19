@@ -1,144 +1,148 @@
-None selectedMore actions
-
-Skip to content
-Using Gmail with screen readers
-in:sent 
-Enable desktop notifications for Gmail.
-   OK  No, thanks
-Conversations
-0.09 GB of 15 GB used
-Terms · Privacy · Programme Policies
-Last account activity: 6 minutes ago
-Details
-il. Press Tab to insert.
 <!DOCTYPE html>
 <html lang="en">
 <head>
-@@ -22,7 +9,7 @@
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logistics Assignment Submission</title>
+  <style>
+    body {
       margin: 0;
       padding: 0;
-      font-family: 'Arial', sans-serif;
-      background-color: #e8f5e9; /* Light green background */
-      background-color: #e8f5e9;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f1f8f4;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-@@ -32,7 +19,7 @@
     }
+
     .header {
+      background: #2e7d32;
+      color: white;
       text-align: center;
-      background: #388e3c; /* Dark green header */
-      background: #388e3c;
-      color: #fff;
       padding: 40px 20px;
       width: 100%;
-@@ -57,35 +44,38 @@
-      max-width: 900px;
-      margin-top: 40px;
-      display: flex;
-      flex-direction: column; /* Vertical layout */
-      flex-direction: column;
-      gap: 20px;
-      justify-items: center;
     }
-    .assignment-box {
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      border: 2px solid #388e3c; /* Matching green color */
-      border: 2px solid #388e3c;
-      width: 100%;
-      text-align: center;
-      cursor: pointer;
-      transition: transform 0.3s ease, background 0.3s ease;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    .header h1 {
+      margin: 0;
+      font-size: 2.2rem;
     }
-    .assignment-box:hover {
-      transform: scale(1.05);
-      background: #f1f8e9; /* Light green on hover */
-      background: #f1f8e9;
-    }
-    .assignment-box a {
-      text-decoration: none;
-      color: #388e3c;
+
+    .header p {
+      margin-top: 10px;
       font-size: 1.1rem;
     }
+
+    .assignments {
+      max-width: 960px;
+      width: 100%;
+      margin: 40px auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding: 0 20px;
+    }
+
+    .assignment-box {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      border: 2px solid #2e7d32;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.25s ease, background 0.25s ease;
+      text-align: center;
+    }
+
+    .assignment-box:hover {
+      transform: scale(1.02);
+      background: #e8f5e9;
+    }
+
+    .assignment-box a {
+      color: #2e7d32;
+      text-decoration: none;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .assignment-box h3 {
+      margin-top: 16px;
+      font-size: 1.1rem;
+      color: #444;
+    }
+
     iframe {
       width: 100%;
-      height: 600px;
+      height: 500px;
       border: none;
+      margin-top: 12px;
+      border-radius: 8px;
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
     }
+
     .footer {
+      background: #2e7d32;
+      color: white;
+      padding: 20px;
+      width: 100%;
       text-align: center;
       margin-top: 40px;
-      padding: 20px;
-      background: #388e3c; /* Green footer */
-      background: #388e3c;
-      color: #fff;
-      border-radius: 15px;
-      width: 100%;
-@@ -105,6 +95,9 @@
+      border-radius: 12px 12px 0 0;
+    }
+
+    @media (max-width: 768px) {
       .assignment-box {
-        padding: 15px;
+        padding: 16px;
       }
+
       iframe {
-        height: 400px;
+        height: 350px;
       }
     }
   </style>
 </head>
-@@ -115,33 +108,37 @@ <h2>Logistics Assignment Submission</h2>
+<body>
+
+  <div class="header">
+    <h1>Logistics Assignment Submission</h1>
     <p>Student No: 2217483</p>
   </div>
 
-  <!-- Assignment groups: each group includes one link for submission and one for report -->
   <div class="assignments">
     <div class="assignment-box">
-      <a href="https://excalidraw.com/#json=xoHvXzm33VxE8i2CaEc6G,_gRjGPwIm66NcVmQzOBeDA">
       <a href="https://excalidraw.com/#json=xoHvXzm33VxE8i2CaEc6G,_gRjGPwIm66NcVmQzOBeDA" target="_blank">
         EXCALIDRAW
       </a>
     </div>
 
     <div class="assignment-box">
-      <a href="webapp.html">
-        WEBAPP
-      </a>
+      <a href="webapp.html">WEBAPP</a>
     </div>
 
     <div class="assignment-box">
-      <a href="lead_time_analysis.html">
-       BULLWHIP LEADTIME
-      </a>
+      <a href="lead_time_analysis.html">BULLWHIP LEADTIME</a>
     </div>
 
-    <!-- Embedded Excel Heatmap -->
     <div class="assignment-box">
-      <a href="warehouse heatmap.xlsx">
-        Heatmap
-      </a>
-      <h3>Heatmap (Excel)</h3>
+      <a href="warehouse heatmap.xlsx" download>Download Heatmap (Excel)</a>
+      <h3>Preview:</h3>
       <iframe src="https://view.officeapps.live.com/op/embed.aspx?src=https://raw.githubusercontent.com/basanta2217483/logistics-project/main/warehouse%20heatmap.xlsx"></iframe>
     </div>
 
-    <!-- Embedded Word Document -->
     <div class="assignment-box">
-      <a href="Logistics Research.docx">
-         LOGISTICS INTRODUCTION
-      </a>
-      <h3>LOGISTICS INTRODUCTION (Word)</h3>
+      <a href="Logistics Research.docx" download>Download Logistics Introduction (Word)</a>
+      <h3>Preview:</h3>
       <iframe src="https://view.officeapps.live.com/op/embed.aspx?src=https://raw.githubusercontent.com/basanta2217483/logistics-project/main/Logistics%20Research.docx"></iframe>
     </div>
 
     <div class="assignment-box">
-      <a href="Generalized Warehouse Slotting Strategy (1).docx">
-         Slotting Information
-@@ -152,8 +149,5 @@ <h2>Logistics Assignment Submission</h2>
+      <a href="Generalized Warehouse Slotting Strategy (1).docx" download>Slotting Information</a>
+    </div>
+  </div>
+
   <div class="footer">
     <p>Contact: email@gmail.com | Phone: Email me</p>
   </div>
 
 </body>
 </html>
-index.html
-Displaying index.html.

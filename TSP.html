@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<title>Courier Circuit: The Route Challenge</title>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        background: linear-gradient(135deg, #0d0d0d 0%, #1a1a2e 50%, #16213e 100%);
+        color: #f0f0f0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        padding: 20px;
+        min-height: 100vh;
+        gap: 15px;
+        overflow-x: hidden;
+    }
+    
+    .header {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    
+    h1 {
+        margin: 0 0 5px 0;
+        font-size: 2.2rem;
+        background: linear-gradient(45deg, #00eaff, #ff6b6b, #4ecdc4);
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: gradientShift 3s ease-in-out infinite;
+        text-shadow: 0 0 20px rgba(0, 234, 255, 0.5);
+    }
+    
+    @keyframes gradientShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+    
+    .subtitle {
+        color: #888;
+        font-size: 0.9rem;
+        margin: 0;
+    }
+    
+    .stats-panel {
+        display: flex;
+        gap: 20px;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 15px;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 10px;
+    }
+    
+    .stat-item {
+        text-align: center;
+        min-width: 80px;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #00eaff;
+    }
+    
+    .stat-label {
+        font-size: 0.8rem;
+        color: #888;
+        margin-top: 2px;
+    }
+    
+    .controls {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    button {
+        padding: 10px 18px;
+        background: linear-gradient(45deg, #111, #222);
+        border: 1px solid #00eaff;
+        color: #f0f0f0;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    button:hover {
+        background: linear-gradient(45deg, #006d84, #0088a9);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 234, 255, 0.3);
+    }
+    
+    button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    button:disabled:hover {
+        background: linear-gradient(45deg, #111, #222);
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .difficulty-selector {
+        display: flex;
+        gap: 5px;
+        margin-bottom: 10px;
+    }
+    
+    .difficulty-btn {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+    
+    .difficulty-btn.active {
+        background: linear-gradient(45deg, #00eaff, #0088a9);
+        color: #000;
+    }
+    
+    .game-container {
+        position: relative;
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+    }
+    
+    #gameCanvas {
+        border: 2px solid #333;
+        background: #1a1a1a;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        transition: all 0.3s ease;
+    }
+    
+    #gameCanvas:hover {
+        box-shadow: 0 15px 40px rgba(0, 234, 255, 0.2);
+    }
+    
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        min-width: 250px;
+    }
+    
+    .info-panel {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 15px;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        min-height: 100px;
+    }
+    
+    .info-title {
+        font-weight: bold;
+        color: #00eaff;
+        margin-bottom: 8px;
+        font-size: 1.1rem;
+    }
+    
+    .info-content {
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+    
+    .leaderboard {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 15px;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .leaderboard-title {
+        font-weight: bold;
+        color: #00eaff;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    
+    .leaderboard-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 0.9rem;
+    }
+    
+    .leaderboard-item:last-child {
+        border-bottom: none;
+    }
+    
+    .achievement {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        transform: translateX(400px);
+        transition: transform 0.5s ease;
+        z-index: 1000;
+    }
+    
+    .achievement.show {
+        transform: translateX(0);
+    }
+    
+    .achievement-title {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    
+    .achievement-desc {
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+    
+    .hint-btn {
+        background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+        border-color: #ff6b6b;
+    }
+    
+    .hint-btn:hover {
+        background: linear-gradient(45deg, #ee5a24, #d63031);
+    }
+    
+    .optimal-btn {
+        background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        border-color: #4ecdc4;
+    }
+    
+    .optimal-btn:hover {
+        background: linear-gradient(45deg, #44a08d, #2d3436);
+    }
+    
+    .pulse {
+        animation: pulse 1s ease-in-out;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    .shake {
+        animation: shake 0.5s ease-in-out;
+    }
+    
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+    
+    .fade-in {
+        animation: fadeIn 0.5s ease-in;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @media (max-width: 768px) {
+        .game-container {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .sidebar {
+            min-width: 300px;
+        }
+        
+        .stats-panel {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="header">
+        <h1>Courier Circuit: The Route Challenge</h1>
+        <p class="subtitle">Optimize your delivery route and compete for the best time!</p>
+    </div>
+    
+    <div class="stats-panel">
+        <div class="stat-item">
+            <div class="stat-value" id="timer">00:00</div>
+            <div class="stat-label">Time</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="score">0</div>
+            <div class="stat-label">Score</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="energy">0</div>
+            <div class="stat-label">Energy</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="visited">0/6</div>
+            <div class="stat-label">Visited</div>
+        </div>
+    </div>
+    
+    <div class="difficulty-selector">
+        <button class="difficulty-btn active" data-difficulty="easy">Easy (6 nodes)</button>
+        <button class="difficulty-btn" data-difficulty="medium">Medium (8 nodes)</button>
+        <button class="difficulty-btn" data-difficulty="hard">Hard (10 nodes)</button>
+    </div>
+    
+    <div class="controls">
+        <button id="startBtn">Start Game</button>
+        <button id="resetBtn" disabled>Reset</button>
+        <button id="hintBtn" disabled>Hint</button>
+        <button id="optimalBtn" disabled>Show Optimal</button>
+        <button id="leaderboardBtn">Leaderboard</button>
+    </div>
+    
+    <div class="game-container">
+        <canvas id="gameCanvas" width="600" height="500"></canvas>
+        
+        <div class="sidebar">
+            <div class="info-panel">
+                <div class="info-title">Game Info</div>
+                <div class="info-content" id="info">Click "Start Game" to begin your delivery route optimization challenge!</div>
+            </div>
+            
+            <div class="leaderboard">
+                <div class="leaderboard-title">Best Times</div>
+                <div id="leaderboardContent">
+                    <div class="leaderboard-item">
+                        <span>No records yet</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+/* ========== GAME CONFIGURATION ========== */
+const DIFFICULTIES = {
+    easy: {
+        nodes: [
+            { id: 0, name: 'A', x: 100, y: 100 },
+            { id: 1, name: 'B', x: 400, y: 80 },
+            { id: 2, name: 'C', x: 250, y: 200 },
+            { id: 3, name: 'D', x: 450, y: 300 },
+            { id: 4, name: 'E', x: 100, y: 350 },
+            { id: 5, name: 'F', x: 250, y: 400 }
+        ],
+        cost: [
+            [0, 30, 18, 40, 25, 33],
+            [30, 0, 19, 22, 40, 35],
+            [18, 19, 0, 22, 21, 20],
+            [40, 22, 22, 0, 35, 22],
+            [25, 40, 21, 35, 0, 15],
+            [33, 35, 20, 22, 15, 0]
+        ]
+    },
+    medium: {
+        nodes: [
+            { id: 0, name: 'A', x: 80, y: 80 },
+            { id: 1, name: 'B', x: 450, y: 60 },
+            { id: 2, name: 'C', x: 200, y: 150 },
+            { id: 3, name: 'D', x: 500, y: 200 },
+            { id: 4, name: 'E', x: 120, y: 300 },
+            { id: 5, name: 'F', x: 300, y: 350 },
+            { id: 6, name: 'G', x: 450, y: 400 },
+            { id: 7, name: 'H', x: 200, y: 450 }
+        ],
+        cost: [
+            [0, 35, 20, 45, 28, 38, 50, 42],
+            [35, 0, 25, 18, 45, 40, 30, 48],
+            [20, 25, 0, 28, 24, 22, 35, 26],
+            [45, 18, 28, 0, 40, 25, 15, 45],
+            [28, 45, 24, 40, 0, 18, 42, 20],
+            [38, 40, 22, 25, 18, 0, 28, 22],
+            [50, 30, 35, 15, 42, 28, 0, 35],
+            [42, 48, 26, 45, 20, 22, 35, 0]
+        ]
+    },
+    hard: {
+        nodes: [
+            { id: 0, name: 'A', x: 60, y: 60 },
+            { id: 1, name: 'B', x: 500, y: 50 },
+            { id: 2, name: 'C', x: 150, y: 120 },
+            { id: 3, name: 'D', x: 550, y: 150 },
+            { id: 4, name: 'E', x: 100, y: 250 },
+            { id: 5, name: 'F', x: 350, y: 280 },
+            { id: 6, name: 'G', x: 500, y: 350 },
+            { id: 7, name: 'H', x: 150, y: 400 },
+            { id: 8, name: 'I', x: 400, y: 450 },
+            { id: 9, name: 'J', x: 250, y: 480 }
+        ],
+        cost: [
+            [0, 40, 22, 50, 30, 42, 55, 45, 60, 48],
+            [40, 0, 30, 20, 50, 45, 35, 55, 40, 52],
+            [22, 30, 0, 35, 26, 25, 40, 28, 45, 30],
+            [50, 20, 35, 0, 45, 30, 18, 50, 35, 48],
+            [30, 50, 26, 45, 0, 20, 48, 22, 42, 25],
+            [42, 45, 25, 30, 20, 0, 32, 25, 30, 18],
+            [55, 35, 40, 18, 48, 32, 0, 40, 25, 38],
+            [45, 55, 28, 50, 22, 25, 40, 0, 35, 28],
+            [60, 40, 45, 35, 42, 30, 25, 35, 0, 32],
+            [48, 52, 30, 48, 25, 18, 38, 28, 32, 0]
+        ]
+    }
+};
+
+const ACHIEVEMENTS = {
+    speedster: { title: "Speedster", desc: "Complete route in under 30 seconds" },
+    optimizer: { title: "Route Optimizer", desc: "Find optimal solution" },
+    perfectionist: { title: "Perfectionist", desc: "Complete all difficulties" },
+    master: { title: "TSP Master", desc: "Beat all optimal times" }
+};
+
+/* ========== GAME STATE ========== */
+let currentDifficulty = 'easy';
+let nodes = DIFFICULTIES.easy.nodes;
+let cost = DIFFICULTIES.easy.cost;
+let route = [];
+let routeComplete = false;
+let gameStarted = false;
+let startTime = 0;
+let timerInterval = null;
+let score = 0;
+let hintsUsed = 0;
+let achievements = new Set();
+let leaderboard = JSON.parse(localStorage.getItem('tsp_leaderboard') || '{}');
+
+const nodeRadius = 16;
+const routeLineWidth = 3;
+
+/* ========== DOM ELEMENTS ========== */
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const info = document.getElementById('info');
+const startBtn = document.getElementById('startBtn');
+const resetBtn = document.getElementById('resetBtn');
+const hintBtn = document.getElementById('hintBtn');
+const optimalBtn = document.getElementById('optimalBtn');
+const leaderboardBtn = document.getElementById('leaderboardBtn');
+const timerEl = document.getElementById('timer');
+const scoreEl = document.getElementById('score');
+const energyEl = document.getElementById('energy');
+const visitedEl = document.getElementById('visited');
+const leaderboardContent = document.getElementById('leaderboardContent');
+
+/* ========== INITIALIZATION ========== */
+drawMap();
+updateLeaderboard();
+updateStats();
+
+/* ========== EVENT LISTENERS ========== */
+startBtn.addEventListener('click', startGame);
+resetBtn.addEventListener('click', resetGame);
+hintBtn.addEventListener('click', showHint);
+optimalBtn.addEventListener('click', showOptimal);
+leaderboardBtn.addEventListener('click', showLeaderboard);
+
+document.querySelectorAll('.difficulty-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        currentDifficulty = e.target.dataset.difficulty;
+        nodes = DIFFICULTIES[currentDifficulty].nodes;
+        cost = DIFFICULTIES[currentDifficulty].cost;
+        resetGame();
+        drawMap();
+    });
+});
+
+canvas.addEventListener('click', handleCanvasClick);
+
+/* ========== GAME FUNCTIONS ========== */
+function startGame() {
+    route = [];
+    routeComplete = false;
+    gameStarted = true;
+    startTime = Date.now();
+    score = 0;
+    hintsUsed = 0;
+    
+    info.textContent = `Difficulty: ${currentDifficulty.toUpperCase()}. Select your starting station.`;
+    startBtn.disabled = true;
+    resetBtn.disabled = false;
+    hintBtn.disabled = false;
+    optimalBtn.disabled = false;
+    
+    startTimer();
+    drawMap();
+    updateStats();
+}
+
+function resetGame() {
+    route = [];
+    routeComplete = false;
+    gameStarted = false;
+    score = 0;
+    hintsUsed = 0;
+    
+    stopTimer();
+    info.textContent = 'Click "Start Game" to begin your delivery route optimization challenge!';
+    startBtn.disabled = false;
+    resetBtn.disabled = true;
+    hintBtn.disabled = true;
+    optimalBtn.disabled = true;
+    
+    drawMap();
+    updateStats();
+}
+
+function handleCanvasClick(event) {
+    if (!gameStarted) return;
+    
+    const rect = canvas.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const clickY = event.clientY - rect.top;
+    
+    const clicked = nodes.find(n => {
+        const dx = n.x - clickX;
+        const dy = n.y - clickY;
+        return Math.sqrt(dx*dx + dy*dy) <= nodeRadius;
+    });
+    
+    if (!clicked) return;
+    if (routeComplete) return;
+    
+    const alreadyVisited = route.includes(clicked.id);
+    
+    if (route.length === 0) {
+        route.push(clicked.id);
+        info.textContent = `Starting at ${clicked.name}. Select next destination.`;
+        canvas.classList.add('pulse');
+        setTimeout(() => canvas.classList.remove('pulse'), 1000);
+    } else {
+        if (clicked.id === route[0] && route.length === nodes.length) {
+            route.push(clicked.id);
+            routeComplete = true;
+            const totalEnergy = calculateCost();
+            const timeElapsed = (Date.now() - startTime) / 1000;
+            const timeScore = Math.max(0, 1000 - Math.floor(timeElapsed * 10));
+            const energyScore = Math.max(0, 500 - totalEnergy);
+            const hintPenalty = hintsUsed * 50;
+            score = timeScore + energyScore - hintPenalty;
+            
+            stopTimer();
+            
+            const optimalEnergy = getOptimalCost();
+            const isOptimal = totalEnergy === optimalEnergy;
+            
+            info.textContent = `Route complete! Energy: ${totalEnergy} (Optimal: ${optimalEnergy}) | Time: ${timeElapsed.toFixed(1)}s | Score: ${score}`;
+            
+            if (isOptimal) {
+                showAchievement('optimizer');
+            }
+            
+            if (timeElapsed < 30) {
+                showAchievement('speedster');
+            }
+            
+            updateLeaderboard(timeElapsed, totalEnergy, score);
+            canvas.classList.add('fade-in');
+        } else if (!alreadyVisited) {
+            route.push(clicked.id);
+            info.textContent = `Visited ${clicked.name}. ${nodes.length - route.length} stations remaining.`;
+        } else {
+            info.textContent = 'Already visited that station. Choose a different one.';
+            canvas.classList.add('shake');
+            setTimeout(() => canvas.classList.remove('shake'), 500);
+        }
+    }
+    
+    drawMap();
+    updateStats();
+}
+
+function calculateCost() {
+    let total = 0;
+    for (let i = 0; i < route.length - 1; i++) {
+        total += cost[route[i]][route[i+1]];
+    }
+    return total;
+}
+
+function getOptimalCost() {
+    // Simple greedy algorithm for demonstration
+    // In a real implementation, you'd use a proper TSP solver
+    const visited = new Set();
+    let current = 0;
+    let total = 0;
+    visited.add(current);
+    
+    for (let i = 1; i < nodes.length; i++) {
+        let minCost = Infinity;
+        let nextNode = -1;
+        
+        for (let j = 0; j < nodes.length; j++) {
+            if (!visited.has(j) && cost[current][j] < minCost) {
+                minCost = cost[current][j];
+                nextNode = j;
+            }
+        }
+        
+        if (nextNode !== -1) {
+            total += minCost;
+            current = nextNode;
+            visited.add(current);
+        }
+    }
+    
+    // Return to start
+    total += cost[current][0];
+    return total;
+}
+
+function showHint() {
+    if (route.length === 0) {
+        info.textContent = 'Hint: Start with any station, then visit the closest unvisited station.';
+    } else if (route.length < nodes.length) {
+        const current = route[route.length - 1];
+        let minCost = Infinity;
+        let bestNext = -1;
+        
+        for (let i = 0; i < nodes.length; i++) {
+            if (!route.includes(i) && cost[current][i] < minCost) {
+                minCost = cost[current][i];
+                bestNext = i;
+            }
+        }
+        
+        if (bestNext !== -1) {
+            info.textContent = `Hint: Next best station is ${nodes[bestNext].name} (cost: ${minCost})`;
+            hintsUsed++;
+        }
+    }
+}
+
+function showOptimal() {
+    const optimalCost = getOptimalCost();
+    const currentCost = route.length > 1 ? calculateCost() : 0;
+    info.textContent = `Optimal route cost: ${optimalCost}. Your current cost: ${currentCost}`;
+}
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        const elapsed = Date.now() - startTime;
+        const seconds = Math.floor(elapsed / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    }, 100);
+}
+
+function stopTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+}
+
+function updateStats() {
+    const currentEnergy = route.length > 1 ? calculateCost() : 0;
+    energyEl.textContent = currentEnergy;
+    visitedEl.textContent = `${route.length}/${nodes.length}`;
+    scoreEl.textContent = score;
+}
+
+function updateLeaderboard(time = null, energy = null, newScore = null) {
+    if (time !== null && energy !== null && newScore !== null) {
+        if (!leaderboard[currentDifficulty]) {
+            leaderboard[currentDifficulty] = [];
+        }
+        
+        leaderboard[currentDifficulty].push({
+            time: time,
+            energy: energy,
+            score: newScore,
+            date: new Date().toLocaleDateString()
+        });
+        
+        leaderboard[currentDifficulty].sort((a, b) => b.score - a.score);
+        leaderboard[currentDifficulty] = leaderboard[currentDifficulty].slice(0, 5);
+        
+        localStorage.setItem('tsp_leaderboard', JSON.stringify(leaderboard));
+    }
+    
+    const records = leaderboard[currentDifficulty] || [];
+    leaderboardContent.innerHTML = '';
+    
+    if (records.length === 0) {
+        leaderboardContent.innerHTML = '<div class="leaderboard-item"><span>No records yet</span></div>';
+    } else {
+        records.forEach((record, index) => {
+            const item = document.createElement('div');
+            item.className = 'leaderboard-item';
+            item.innerHTML = `
+                <span>#${index + 1} ${record.score}pts</span>
+                <span>${record.time.toFixed(1)}s</span>
+            `;
+            leaderboardContent.appendChild(item);
+        });
+    }
+}
+
+function showLeaderboard() {
+    const allRecords = Object.entries(leaderboard).flatMap(([difficulty, records]) => 
+        records.map(record => ({ ...record, difficulty }))
+    ).sort((a, b) => b.score - a.score).slice(0, 10);
+    
+    let message = 'Global Leaderboard:\n';
+    allRecords.forEach((record, index) => {
+        message += `${index + 1}. ${record.difficulty.toUpperCase()}: ${record.score}pts (${record.time.toFixed(1)}s)\n`;
+    });
+    
+    alert(message);
+}
+
+function showAchievement(achievementKey) {
+    if (achievements.has(achievementKey)) return;
+    
+    achievements.add(achievementKey);
+    const achievement = ACHIEVEMENTS[achievementKey];
+    
+    const achievementEl = document.createElement('div');
+    achievementEl.className = 'achievement';
+    achievementEl.innerHTML = `
+        <div class="achievement-title">🏆 ${achievement.title}</div>
+        <div class="achievement-desc">${achievement.desc}</div>
+    `;
+    
+    document.body.appendChild(achievementEl);
+    
+    setTimeout(() => achievementEl.classList.add('show'), 100);
+    setTimeout(() => {
+        achievementEl.classList.remove('show');
+        setTimeout(() => document.body.removeChild(achievementEl), 500);
+    }, 3000);
+}
+
+/* ========== DRAWING ========== */
+function drawMap() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw background grid
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < canvas.width; i += 50) {
+        ctx.beginPath();
+        ctx.moveTo(i, 0);
+        ctx.lineTo(i, canvas.height);
+        ctx.stroke();
+    }
+    for (let i = 0; i < canvas.height; i += 50) {
+        ctx.beginPath();
+        ctx.moveTo(0, i);
+        ctx.lineTo(canvas.width, i);
+        ctx.stroke();
+    }
+    
+    // Draw edges with cost labels
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+    nodes.forEach(n1 => {
+        nodes.forEach(n2 => {
+            if (n1.id < n2.id) {
+                ctx.beginPath();
+                ctx.moveTo(n1.x, n1.y);
+                ctx.lineTo(n2.x, n2.y);
+                ctx.stroke();
+                
+                // Draw cost label
+                const midX = (n1.x + n2.x) / 2;
+                const midY = (n1.y + n2.y) / 2;
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.font = '10px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(cost[n1.id][n2.id], midX, midY - 5);
+            }
+        });
+    });
+    
+    // Draw route lines with animation
+    if (route.length > 1) {
+        ctx.lineWidth = routeLineWidth;
+        ctx.strokeStyle = '#00eaff';
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        
+        // Add glow effect
+        ctx.shadowColor = '#00eaff';
+        ctx.shadowBlur = 10;
+        
+        ctx.beginPath();
+        const firstNode = nodes[route[0]];
+        ctx.moveTo(firstNode.x, firstNode.y);
+        
+        for (let i = 1; i < route.length; i++) {
+            const n = nodes[route[i]];
+            ctx.lineTo(n.x, n.y);
+        }
+        ctx.stroke();
+        
+        // Reset shadow
+        ctx.shadowBlur = 0;
+        
+        // Draw route direction arrows
+        for (let i = 0; i < route.length - 1; i++) {
+            const n1 = nodes[route[i]];
+            const n2 = nodes[route[i + 1]];
+            const midX = (n1.x + n2.x) / 2;
+            const midY = (n1.y + n2.y) / 2;
+            
+            const angle = Math.atan2(n2.y - n1.y, n2.x - n1.x);
+            ctx.save();
+            ctx.translate(midX, midY);
+            ctx.rotate(angle);
+            
+            ctx.fillStyle = '#00eaff';
+            ctx.beginPath();
+            ctx.moveTo(8, 0);
+            ctx.lineTo(-4, -3);
+            ctx.lineTo(-4, 3);
+            ctx.closePath();
+            ctx.fill();
+            
+            ctx.restore();
+        }
+    }
+    
+    // Draw nodes with enhanced styling
+    nodes.forEach((n, index) => {
+        const isVisited = route.includes(n.id);
+        const isCurrent = route.length > 0 && route[route.length - 1] === n.id;
+        
+        // Node glow effect
+        if (isCurrent) {
+            ctx.shadowColor = '#00eaff';
+            ctx.shadowBlur = 15;
+        } else if (isVisited) {
+            ctx.shadowColor = '#4ecdc4';
+            ctx.shadowBlur = 8;
+        }
+        
+        // Node background
+        ctx.beginPath();
+        if (isCurrent) {
+            ctx.fillStyle = '#00eaff';
+        } else if (isVisited) {
+            ctx.fillStyle = '#4ecdc4';
+        } else {
+            ctx.fillStyle = '#f0f0f0';
+        }
+        ctx.arc(n.x, n.y, nodeRadius, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Node border
+        ctx.strokeStyle = '#0d0d0d';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        
+        // Reset shadow
+        ctx.shadowBlur = 0;
+        
+        // Node label
+        ctx.fillStyle = isVisited ? '#000' : '#333';
+        ctx.font = 'bold 12px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(n.name, n.x, n.y);
+        
+        // Visit order indicator
+        if (isVisited) {
+            const visitIndex = route.indexOf(n.id);
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 10px Arial';
+            ctx.fillText(visitIndex + 1, n.x, n.y + nodeRadius + 15);
+        }
+    });
+}
+</script>
+</body>
+</html>
